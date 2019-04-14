@@ -6,34 +6,54 @@
 import typeToReducer from 'type-to-reducer';
 import { createAction } from 'redux-actions';
 
+import { isCompleted } from '../utils';
+
 // Actions
 export const MOVE = createAction('game/MOVE');
+export const SHUFFLE = createAction('game/SHUFFLE');
 export const ROLLBACK = createAction('game/ROLLBACK');
 
 // Action creators
 export const moveGame = nextGameState => MOVE(nextGameState);
+export const shuffleGame = gameState => SHUFFLE(gameState);
 export const rollbackGame = () => ROLLBACK();
 
 // Selectors
-export const gameSelector = (state) => state.game.game;
+export const gameSelector = (state) => state.game.state;
 export const gameHistorySelector = (state) => state.game.history;
+export const gameIsCompletedSelector = (state) => state.game.isCompleted;
 
 // Reducer
 export default typeToReducer({
   [MOVE]: (state, { payload }) => {
+    const currentGameState = state.state;
+
     return {
-      game: payload,
-      history: [...state.history, payload],
+      state: payload,
+      history: [...state.history, currentGameState],
+      isCompleted: isCompleted(payload),
     };
   },
-  [ROLLBACK]: (state, { payload }) => {
+  [ROLLBACK]: state => {
+    const clonedHistory = [...state.history];
+    const prevGameState = clonedHistory.pop();
+
     return {
-      game: state.history.pop(),
-      history: state.history,
+      state: prevGameState,
+      history: clonedHistory,
+      isCompleted: isCompleted(prevGameState),
+    };
+  },
+  [SHUFFLE]: (state, { payload }) => {
+    return {
+      state: payload,
+      history: [],
+      isCompleted: isCompleted(payload),
     };
   },
 }, {
-  game: [],
+  state: [],
   history: [],
+  isCompleted: false,
 });
 

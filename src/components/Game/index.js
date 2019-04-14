@@ -2,37 +2,59 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import Grid from '../Grid';
-import { createGameState, move } from '../../utils';
-import { gameHistorySelector, gameSelector, moveGame, rollbackGame } from '../../redux/game';
+import { move, shuffle } from '../../utils';
+import {
+  moveGame,
+  shuffleGame,
+  rollbackGame,
+  gameSelector,
+  gameHistorySelector,
+  gameIsCompletedSelector,
+} from '../../redux/game';
+
+import './styles.css';
 
 class Game extends Component {
   componentDidMount() {
-    const { moveGame } = this.props;
-
-    moveGame(createGameState());
+    this.onShuffleClick();
   }
 
   onCellClick = (number, index) => {
-    const { game, moveGame } = this.props;
+    const { gameState, moveGame } = this.props;
 
-    const nextGameState = move(game, index);
-    if (nextGameState) moveGame(nextGameState);
+    const nextGameState = move(gameState, index);
+
+    if (nextGameState)
+      moveGame(nextGameState);
   };
 
   onRollbackClick = () => {
-    const { rollbackGame } = this.props;
+    const { rollbackGame, gameHistory } = this.props;
 
-    rollbackGame();
+    if (gameHistory.length > 0)
+      rollbackGame();
+  };
+
+  onShuffleClick = () => {
+    const { shuffleGame } = this.props;
+
+    shuffleGame(shuffle());
   };
 
   render() {
-    const { game, gameHistory } = this.props;
+    const { gameState, gameHistory, gameIsCompleted } = this.props;
 
     return (
       <div className={'Game'}>
-        <Grid gameState={game} onCellClick={this.onCellClick} />
-        <div>
+        <h1>15 PUZZLE</h1>
+        <Grid gameState={gameState} onCellClick={this.onCellClick} />
+        {
+          gameIsCompleted &&
+          <div className={'GameCongratulations'}>Congratulations! You did it! 🎉</div>
+        }
+        <div className={'GameActions'}>
           <button onClick={this.onRollbackClick}>Rollback ({gameHistory.length})</button>
+          <button onClick={this.onShuffleClick}>Shuffle</button>
         </div>
       </div>
     );
@@ -40,12 +62,14 @@ class Game extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  game: gameSelector(state),
+  gameState: gameSelector(state),
   gameHistory: gameHistorySelector(state),
+  gameIsCompleted: gameIsCompletedSelector(state),
 });
 
 const mapDispatchToProps = {
   moveGame,
+  shuffleGame,
   rollbackGame,
 };
 

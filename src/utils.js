@@ -1,4 +1,4 @@
-export const isFinished = (gameState = []) => {
+export const isCompleted = gameState => {
   for (let i = 0; i < 15; i++) {
     if (gameState[i] > gameState[i + 1]) return false;
   }
@@ -10,6 +10,22 @@ export const createGameState = () => {
   for (let i = 0; i < 16; i++) {
     gameState.push(i + 1);
   }
+  return gameState;
+};
+
+export const getRandomInt = (min, max) => {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+};
+
+export const shuffle = () => {
+  const gameState = new Array(16);
+
+  for (let currentValue = 1; currentValue < 17; currentValue++) {
+    let currentIndex = getRandomInt(0, 15);
+    while (gameState[currentIndex]) currentIndex = getRandomInt(0, 15);
+    gameState[currentIndex] = currentValue;
+  }
+
   return gameState;
 };
 

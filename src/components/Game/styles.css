@@ -1,0 +1,38 @@
+.Game {
+
+}
+
+.Game h1 {
+  color: #7fc4f0;
+  text-align: center;
+}
+
+.GameActions {
+  margin: 40px auto auto;
+  text-align: center;
+  display: flex;
+  width: 300px;
+  justify-content: space-between;
+}
+
+.GameActions button {
+  flex: 1;
+}
+
+.GameActions button:not(:last-child) {
+  margin-right: 5px;
+}
+
+
+@media screen and (max-width: 600px) {
+  .GameActions {
+    width: 250px;
+  }
+}
+
+.GameCongratulations {
+  text-align: center;
+  margin: 40px 0;
+  color: #ff6600;
+  font-weight: 500;
+}

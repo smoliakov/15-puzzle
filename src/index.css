@@ -6,7 +6,26 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+* {
+  font-family: 'Montserrat', sans-serif;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
   monospace;
+}
+
+button {
+  border: solid 3px #7fc4f0;
+  outline: none;
+  padding: 10px 20px;
+  border-radius: 3px;
+  background-color: white;
+  font-weight: 700;
+  color: #7fc4f0;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.9;
 }
