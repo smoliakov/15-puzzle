@@ -6,16 +6,16 @@ import './styles.css';
 const Cell = (props) => {
   const { index, number, onClick } = props;
 
-  const position = { top: Math.floor(index / 4) * 60, left: index % 4 * 60 };
+  const position = { top: Math.floor(index / 4) * 25 + '%', left: index % 4 * 25 + '%' };
 
   if (number === 16) return (
-    <div className={`Cell index${index} empty`} style={position} />
+    <div className={`Cell empty`} style={position} />
   );
 
   return (
     <div
       onClick={() => onClick(number, index)}
-      className={`Cell index${index}`}
+      className={`Cell`}
       style={position}>
       {number}
     </div>

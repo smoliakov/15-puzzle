@@ -12,7 +12,7 @@ class Grid extends Component {
     return (
       <div className={'Grid'}>
         {gameState.map((i, index) =>
-          <Cell key={i} number={i} index={index} onClick={onCellClick} />)}
+          <Cell key={index} number={i} index={index} onClick={onCellClick} />)}
       </div>
     );
   }
