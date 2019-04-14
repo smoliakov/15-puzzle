@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { load } from 'redux-localstorage-simple';
 
 import Grid from '../Grid';
 import { move, shuffle } from '../../utils';
@@ -16,7 +17,9 @@ import './styles.css';
 
 class Game extends Component {
   componentDidMount() {
-    this.onShuffleClick();
+    const state = load();
+    if (!state || !(state.game && state.game.state))
+      this.onShuffleClick();
   }
 
   onCellClick = (number, index) => {
@@ -50,7 +53,9 @@ class Game extends Component {
         <Grid gameState={gameState} onCellClick={this.onCellClick} />
         {
           gameIsCompleted &&
-          <div className={'GameCongratulations'}>Congratulations! You did it! 🎉</div>
+          <div className={'GameCongratulations'}>
+            Congratulations! You did it! <span aria-label={'Congrats'} role={'img'}>🎉</span>
+          </div>
         }
         <div className={'GameActions'}>
           <button onClick={this.onRollbackClick}>Rollback ({gameHistory.length})</button>

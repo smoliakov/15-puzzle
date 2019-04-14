@@ -9,7 +9,7 @@ const logger = createLogger({ collapsed: true });
 export default function configureStore(initialState) {
   const store = createStore(
     rootReducer,
-    initialState,
+    load(),
     applyMiddleware(
       logger,
       save(),
